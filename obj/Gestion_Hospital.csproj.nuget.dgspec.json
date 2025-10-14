@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/Coder/Escritorio/Gestion_Hospital/Gestion_hospital/Gestion_Hospital/Gestion_Hospital.csproj": {}
+    "/home/Coder/Música/Gestion_Hospital/Gestion_Hospital.csproj": {}
   },
   "projects": {
-    "/home/Coder/Escritorio/Gestion_Hospital/Gestion_hospital/Gestion_Hospital/Gestion_Hospital.csproj": {
+    "/home/Coder/Música/Gestion_Hospital/Gestion_Hospital.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/Coder/Escritorio/Gestion_Hospital/Gestion_hospital/Gestion_Hospital/Gestion_Hospital.csproj",
+        "projectUniqueName": "/home/Coder/Música/Gestion_Hospital/Gestion_Hospital.csproj",
         "projectName": "Gestion_Hospital",
-        "projectPath": "/home/Coder/Escritorio/Gestion_Hospital/Gestion_hospital/Gestion_Hospital/Gestion_Hospital.csproj",
+        "projectPath": "/home/Coder/Música/Gestion_Hospital/Gestion_Hospital.csproj",
         "packagesPath": "/home/Coder/.nuget/packages/",
-        "outputPath": "/home/Coder/Escritorio/Gestion_Hospital/Gestion_hospital/Gestion_Hospital/obj/",
+        "outputPath": "/home/Coder/Música/Gestion_Hospital/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/Coder/.nuget/NuGet/NuGet.Config"
@@ -37,6 +37,16 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

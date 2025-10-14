@@ -1,8 +1,23 @@
 {
   "version": 2,
-  "dgSpecHash": "BTW3QkJXrkYNPw0PmDyI+bqDaLd7Tc/hFEzCEeYYBzyvW5dGx+0Fzyy9zr3PWI7a0MnPIRZeiCExJNVyffnCgQ==",
+  "dgSpecHash": "ERCT8UlC/YtdRnbY9ctXa4276nNHxjrCxDoOjuc4xEP+QayIMVzWjP/tf5PJoesTp9bpY0dMef8SmOq1K8iA/w==",
   "success": true,
-  "projectFilePath": "/home/Coder/Escritorio/Gestion_Hospital/Gestion_hospital/Gestion_Hospital/Gestion_Hospital.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/Coder/Música/Gestion_Hospital/Gestion_Hospital.csproj",
+  "expectedPackageFiles": [
+    "/home/Coder/.nuget/packages/microsoft.extensions.configuration/8.0.0/microsoft.extensions.configuration.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.configuration.abstractions/8.0.0/microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.configuration.binder/8.0.0/microsoft.extensions.configuration.binder.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.logging/8.0.0/microsoft.extensions.logging.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.logging.configuration/8.0.0/microsoft.extensions.logging.configuration.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.logging.console/8.0.0/microsoft.extensions.logging.console.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.options/8.0.0/microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.options.configurationextensions/8.0.0/microsoft.extensions.options.configurationextensions.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/system.text.encodings.web/8.0.0/system.text.encodings.web.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/system.text.json/8.0.0/system.text.json.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
