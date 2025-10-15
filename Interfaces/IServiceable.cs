@@ -1,9 +1,9 @@
 namespace Gestion_Hospital.Interfaces
 {
     /// <summary>
-    /// Interfaz marcador para servicios del dominio. Actualmente vacía;
-    /// su propósito es permitir tratar servicios de forma genérica o
-    /// añadir contratos comunes en el futuro.
+    /// Marker interface for domain services. Currently empty;
+    /// its purpose is to allow treating services generically or
+    /// to add common contracts in the future.
     /// </summary>
     public interface IServiceable { }
 }

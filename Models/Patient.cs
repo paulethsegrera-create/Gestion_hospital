@@ -3,13 +3,13 @@ using Gestion_Hospital.Interfaces;
 namespace Gestion_Hospital.Models
 {
 	/// <summary>
-	/// Representa un paciente en el sistema.
-	/// Hereda de <see cref="Person"/> para datos comunes (nombre, documento, teléfono, email)
-	/// e implementa <see cref="Gestion_Hospital.Interfaces.IRegistrable"/> para marcarlo como entidad registrable/persistible.
+	/// Represents a patient in the system.
+	/// Inherits from <see cref="Person"/> for common data (name, document, phone, email)
+	/// and implements <see cref="Gestion_Hospital.Interfaces.IRegistrable"/> to mark it as a registrable/persistable entity.
 	/// </summary>
 	public class Patient : Person, IRegistrable
 	{
-		/// <summary>Edad del paciente (años).</summary>
+	/// <summary>Patient's age (years).</summary>
 		public int Age { get; set; }
 	}
 }

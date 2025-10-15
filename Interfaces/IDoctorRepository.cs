@@ -3,15 +3,24 @@ using Gestion_Hospital.Models; // Importa el espacio de nombres donde se encuent
 
 namespace Gestion_Hospital.Interfaces // Define el namespace para organizar el código de interfaces del hospital
 {
-    // Define una interfaz para el repositorio de Doctores
+    /// <summary>
+    /// Interface for doctor repository operations (CRUD and queries).
+    /// </summary>
     public interface IDoctorRepository
     {
-        void Add(Doctor doctor); // Método para agregar un nuevo doctor
-        void Update(Doctor doctor); // Método para actualizar los datos de un doctor existente
-        void Delete(int id); // Método para eliminar un doctor mediante su ID
-        Doctor? GetById(int id); // Método para obtener un doctor por su ID, puede retornar null si no existe
-        Doctor? GetByDocument(string document); // Método para obtener un doctor por su documento, puede retornar null
-        List<Doctor> GetAll(); // Método para obtener la lista completa de doctores
-        List<Doctor> GetBySpecialty(string specialty); // Método para obtener doctores filtrados por especialidad
+        /// <summary>Adds a new doctor.</summary>
+        void Add(Doctor doctor);
+        /// <summary>Updates an existing doctor.</summary>
+        void Update(Doctor doctor);
+        /// <summary>Deletes a doctor by Id.</summary>
+        void Delete(int id);
+        /// <summary>Gets a doctor by Id.</summary>
+        Doctor? GetById(int id);
+        /// <summary>Finds a doctor by document.</summary>
+        Doctor? GetByDocument(string document);
+        /// <summary>Returns all doctors.</summary>
+        List<Doctor> GetAll();
+        /// <summary>Returns doctors filtered by specialty.</summary>
+        List<Doctor> GetBySpecialty(string specialty);
     }
 }

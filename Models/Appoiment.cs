@@ -3,40 +3,40 @@ using System;
 namespace Gestion_Hospital.Models
 {
     /// <summary>
-    /// Estados posibles de una cita.
+    /// Possible appointment statuses.
     /// </summary>
     public enum AppointmentStatus { Scheduled, Cancelled, Attended }
 
     /// <summary>
-    /// Representa una cita médica entre un paciente y un médico.
+    /// Represents a medical appointment between a patient and a doctor.
     /// </summary>
     public class Appointment
     {
-        /// <summary>Identificador de la cita.</summary>
+    /// <summary>Appointment identifier.</summary>
         public int Id { get; set; }
 
-        /// <summary>Id del paciente asociado.</summary>
+    /// <summary>Associated patient Id.</summary>
         public int PatientId { get; set; }
 
-        /// <summary>Referencia al paciente (puede ser nula en ciertos contextos).</summary>
+    /// <summary>Reference to the patient (may be null in some contexts).</summary>
         public Patient? Patient { get; set; }
 
-        /// <summary>Id del médico asociado.</summary>
+    /// <summary>Associated doctor Id.</summary>
         public int DoctorId { get; set; }
 
-        /// <summary>Referencia al médico (puede ser nula en ciertos contextos).</summary>
+    /// <summary>Reference to the doctor (may be null in some contexts).</summary>
         public Doctor? Doctor { get; set; }
 
-        /// <summary>Fecha y hora de inicio.</summary>
+    /// <summary>Start date and time.</summary>
         public DateTime Start { get; set; }
 
-        /// <summary>Fecha y hora de fin.</summary>
+    /// <summary>End date and time.</summary>
         public DateTime End { get; set; }
 
-        /// <summary>Estado de la cita.</summary>
+    /// <summary>Appointment status.</summary>
         public AppointmentStatus Status { get; set; } = AppointmentStatus.Scheduled;
 
-        /// <summary>Notas opcionales (por ejemplo, estado del envío de correo).</summary>
+    /// <summary>Optional notes (e.g., email sending status).</summary>
         public string? Notes { get; set; }
     }
 }

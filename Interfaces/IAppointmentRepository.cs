@@ -4,37 +4,37 @@ using Gestion_Hospital.Models;
 
 namespace Gestion_Hospital.Interfaces
 {
-    // Interfaz que define el contrato para el repositorio de citas médicas (Appointment)
-    // Se encarga de definir las operaciones CRUD y las validaciones de conflictos de horario
+    /// <summary>
+    /// Interface that defines the contract for the appointment repository (Appointment).
+    /// Responsible for CRUD operations and schedule conflict validations.
+    /// </summary>
     public interface IAppointmentRepository
     {
-        // Agrega una nueva cita al repositorio
+        /// <summary>Adds a new appointment to the repository.</summary>
         void Add(Appointment appointment);
 
-        // Actualiza los datos de una cita existente
+        /// <summary>Updates the data of an existing appointment.</summary>
         void Update(Appointment appointment);
 
-        // Elimina una cita del repositorio según su Id
+        /// <summary>Deletes an appointment from the repository by its Id.</summary>
         void Delete(int id);
 
-        // Obtiene una cita específica por su Id
+        /// <summary>Gets a specific appointment by its Id.</summary>
         Appointment? GetById(int id);
 
-        // Obtiene todas las citas asociadas a un paciente específico
+        /// <summary>Gets all appointments associated with a specific patient.</summary>
         List<Appointment> GetByPatient(int patientId);
 
-        // Obtiene todas las citas asociadas a un médico específico
+        /// <summary>Gets all appointments associated with a specific doctor.</summary>
         List<Appointment> GetByDoctor(int doctorId);
 
-        // Devuelve una lista completa con todas las citas registradas
+        /// <summary>Returns a complete list of all registered appointments.</summary>
         List<Appointment> GetAll();
 
-        // Verifica si ya existe una cita en conflicto para el mismo médico
-        // en el rango de tiempo especificado (evita citas superpuestas)
+        /// <summary>Checks if there is a conflicting appointment for the same doctor in the specified time range (prevents overlapping).</summary>
         bool ExistsConflictForDoctor(int doctorId, DateTime start, DateTime end);
 
-        // Verifica si ya existe una cita en conflicto para el mismo paciente
-        // en el rango de tiempo especificado (evita doble agendamiento)
+        /// <summary>Checks if there is a conflicting appointment for the same patient in the specified time range (prevents double booking).</summary>
         bool ExistsConflictForPatient(int patientId, DateTime start, DateTime end);
     }
 }

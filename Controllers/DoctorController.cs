@@ -5,34 +5,34 @@ using Gestion_Hospital.Utils;
 
 namespace Gestion_Hospital.Controllers
 {
-    // Controlador encargado de gestionar todas las operaciones relacionadas con los médicos.
+    // Controller responsible for managing all operations related to doctors.
     public class DoctorController
     {
-        // Servicio de negocio que maneja la lógica de los doctores.
+    // Business service that handles doctor logic.
         private readonly DoctorService _service;
 
-        // Constructor que recibe el servicio por inyección de dependencias.
+    // Constructor that receives the service via dependency injection.
         public DoctorController(DoctorService service)
         {
             _service = service;
         }
 
-        // ===============================
-        // MÉTODO: Crear nuevo médico
-        // ===============================
+    // ===============================
+    // METHOD: Create new doctor
+    // ===============================
         public void Create()
         {
             Console.WriteLine("=== Registrar Médico ===");
             try
             {
-                // Se solicitan los datos del médico utilizando el helper de entrada (InputHelper)
+                // Doctor data is requested using the input helper (InputHelper)
                 var name = InputHelper.PromptName("Nombre: ");
                 var doc = InputHelper.PromptDocument("Documento: ");
                 var specialty = InputHelper.PromptString("Especialidad: ", false).Trim();
                 var (phoneNormalized, truncatedPhone) = InputHelper.PromptPhone("Teléfono: ");
                 var emailNormalized = InputHelper.PromptEmail("Correo: ");
 
-                // Validaciones estrictas de cada campo antes de registrar el médico
+                // Strict validations for each field before registering the doctor
                 if (!Validator.IsValidName(name))
                 {
                     Console.WriteLine("❌ Nombre inválido. El registro fue cancelado.");
@@ -54,11 +54,11 @@ namespace Gestion_Hospital.Controllers
                     return;
                 }
 
-                // Aviso si el número telefónico fue truncado automáticamente
+                // Warning if the phone number was automatically truncated
                 if (truncatedPhone)
                     Console.WriteLine("⚠️ El teléfono ingresado era más largo de 10 dígitos y fue truncado a los 10 dígitos finales.");
 
-                // Se crea el objeto Doctor con los datos validados
+                // Doctor object is created with validated data
                 var doctor = new Doctor
                 {
                     Name = name.Trim(),
@@ -68,37 +68,37 @@ namespace Gestion_Hospital.Controllers
                     Email = emailNormalized
                 };
 
-                // Se registra el médico usando el servicio
+                // Doctor is registered using the service
                 _service.RegisterDoctor(doctor);
                 Console.WriteLine("✅ Médico registrado correctamente.");
             }
             catch (Exception ex)
             {
-                // Captura y muestra errores ocurridos durante el registro
+                // Captures and displays errors occurred during registration
                 Console.WriteLine($"❌ Error: {ex.Message}");
             }
         }
 
-        // ===============================
-        // MÉTODO: Editar médico existente
-        // ===============================
+    // ===============================
+    // METHOD: Edit existing doctor
+    // ===============================
         public void Edit()
         {
             Console.WriteLine("=== Editar Médico ===");
             try
             {
-                // Solicita el documento para localizar al médico existente
+                // Requests the document to locate the existing doctor
                 var doc = InputHelper.PromptString("Documento del médico a editar: ", false).Trim();
                 var existing = _service.GetAll().Find(d => d.Document == doc);
                 if (existing == null) { Console.WriteLine("Médico no encontrado."); return; }
 
-                // Muestra los valores actuales y permite ingresar nuevos (opcionalmente)
+                // Shows current values and allows entering new ones (optionally)
                 Console.Write($"Nombre ({existing.Name}): "); var name = InputHelper.PromptString("", true);
                 Console.Write($"Especialidad ({existing.Specialty}): "); var specialty = InputHelper.PromptString("", true);
                 Console.Write($"Teléfono ({existing.PhoneNumber}): "); var phoneInput = InputHelper.PromptString("", true);
                 Console.Write($"Correo ({existing.Email}): "); var emailInput = InputHelper.PromptString("", true);
 
-                // Validación y actualización del nombre
+                // Name validation and update
                 if (!string.IsNullOrWhiteSpace(name))
                 {
                     if (!Validator.IsValidName(name))
@@ -109,10 +109,10 @@ namespace Gestion_Hospital.Controllers
                     existing.Name = name.Trim();
                 }
 
-                // Actualización directa de la especialidad (sin validación extra)
+                // Direct update of specialty (no extra validation)
                 if (!string.IsNullOrWhiteSpace(specialty)) existing.Specialty = specialty.Trim();
 
-                // Validación y normalización del número de teléfono
+                // Phone number validation and normalization
                 if (!string.IsNullOrWhiteSpace(phoneInput))
                 {
                     var normalized = Validator.NormalizePhone(phoneInput, out bool truncated);
@@ -127,7 +127,7 @@ namespace Gestion_Hospital.Controllers
                     existing.PhoneNumber = normalized;
                 }
 
-                // Validación y normalización del correo electrónico
+                // Email validation and normalization
                 if (!string.IsNullOrWhiteSpace(emailInput))
                 {
                     var emailNormalized = Validator.NormalizeEmail(emailInput);
@@ -139,58 +139,58 @@ namespace Gestion_Hospital.Controllers
                     existing.Email = emailNormalized;
                 }
 
-                // Se guarda la actualización en el servicio
+                // The update is saved in the service
                 _service.UpdateDoctor(existing);
                 Console.WriteLine("✅ Médico actualizado.");
             }
             catch (Exception ex)
             {
-                // Captura errores generales
+                // Captures general errors
                 Console.WriteLine($"❌ Error: {ex.Message}");
             }
         }
 
-        // ===============================
-        // MÉTODO: Listar todos los médicos
-        // ===============================
+    // ===============================
+    // METHOD: List all doctors
+    // ===============================
         public void List()
         {
             Console.WriteLine("=== Lista de Médicos ===");
 
-            // Recorre todos los médicos y muestra su información básica
+            // Iterates all doctors and displays their basic information
             foreach (var d in _service.GetAll())
             {
                     Console.WriteLine($"Id:{d.Id} | {d.Name} | Esp:{d.Specialty} | Doc:{d.MaskDocument()} | Tel:{d.MaskPhone()} | Email:{d.Email}");
             }
         }
 
-        // ===============================
-        // MÉTODO: Listar médicos por especialidad
-        // ===============================
+    // ===============================
+    // METHOD: List doctors by specialty
+    // ===============================
         public void ListBySpecialty()
         {
             Console.Write("Ingrese especialidad para filtrar: ");
             var spec = Console.ReadLine() ?? "";
 
-            // Obtiene los médicos que coincidan con la especialidad dada
+            // Gets doctors matching the given specialty
             var list = _service.GetBySpecialty(spec);
 
             Console.WriteLine($"=== Médicos - filtro: {spec} ===");
             foreach (var d in list)
             {
-                // Muestra datos con el documento enmascarado
+                // Displays data with masked document
                 Console.WriteLine($"Id:{d.Id} | {d.Name} | Esp:{d.Specialty} | Doc:{d.MaskDocument()}");
             }
         }
 
-        // ===============================
-        // MÉTODO: Eliminar un médico
-        // ===============================
+    // ===============================
+    // METHOD: Delete a doctor
+    // ===============================
         public void Delete()
         {
             Console.WriteLine("=== Eliminar Médico ===");
 
-            // Solicita documento del médico a eliminar
+            // Requests document of the doctor to delete
             var doc = InputHelper.PromptDocument("Documento del médico a eliminar: ");
             var existing = _service.GetAll().Find(d => d.Document == doc);
 
@@ -200,7 +200,7 @@ namespace Gestion_Hospital.Controllers
                 return;
             }
                     Console.Write($"Teléfono ({existing.MaskPhone()}): "); var phoneInput = InputHelper.PromptString("", true);
-            // Elimina el médico usando su Id
+            // Deletes the doctor using their Id
             _service.DeleteDoctor(existing.Id);
             Console.WriteLine($"Médico eliminado: {existing.Name} ({existing.MaskDocument()})");
         }

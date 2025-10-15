@@ -23,46 +23,46 @@ namespace Gestion_Hospital.Services
         public void DeleteDoctor(int id)
         {
             var existing = _repo.GetById(id);
-            if (existing == null) throw new InvalidOperationException("Médico no encontrado.");
-            // Eliminar citas asociadas
-            var citas = _appointmentService.GetByDoctor(id);
-            foreach (var cita in citas)
-                _appointmentService.DeleteAppointment(cita.Id);
+            if (existing == null) throw new InvalidOperationException("Doctor not found.");
+            // Delete associated appointments
+            var appointments = _appointmentService.GetByDoctor(id);
+            foreach (var appointment in appointments)
+                _appointmentService.DeleteAppointment(appointment.Id);
             _repo.Delete(id);
-            _logger?.LogInformation("Médico eliminado: {DocumentMasked}", existing.MaskDocument());
+            _logger?.LogInformation("Doctor deleted: {DocumentMasked}", existing.MaskDocument());
         }
 
         public void RegisterDoctor(Doctor doctor)
         {
-            if (string.IsNullOrWhiteSpace(doctor.Name)) throw new ArgumentException("Nombre es obligatorio.");
-            if (string.IsNullOrWhiteSpace(doctor.Document)) throw new ArgumentException("Documento es obligatorio.");
-            if (string.IsNullOrWhiteSpace(doctor.Specialty)) throw new ArgumentException("Especialidad es obligatoria.");
+            if (string.IsNullOrWhiteSpace(doctor.Name)) throw new ArgumentException("Name is required.");
+            if (string.IsNullOrWhiteSpace(doctor.Document)) throw new ArgumentException("Document is required.");
+            if (string.IsNullOrWhiteSpace(doctor.Specialty)) throw new ArgumentException("Specialty is required.");
 
-            // Documento único
-            if (_repo.GetByDocument(doctor.Document) != null) throw new InvalidOperationException("Ya existe un médico con ese documento.");
+            // Unique document
+            if (_repo.GetByDocument(doctor.Document) != null) throw new InvalidOperationException("A doctor with that document already exists.");
 
-            // Validar que no exista la misma combinación nombre+especialidad
+            // Validate that the same name+specialty combination does not exist
             var existsSameNameSpecialty = _repo.GetAll().Any(d => d.Name.ToLower() == doctor.Name.ToLower()
                                                                  && d.Specialty.ToLower() == doctor.Specialty.ToLower());
-            if (existsSameNameSpecialty) throw new InvalidOperationException("Ya existe un médico con el mismo nombre y especialidad.");
+            if (existsSameNameSpecialty) throw new InvalidOperationException("A doctor with the same name and specialty already exists.");
 
             _repo.Add(doctor);
-            _logger?.LogInformation("Médico registrado: {DocumentMasked} - {Specialty}", doctor.MaskDocument(), doctor.Specialty);
+            _logger?.LogInformation("Doctor registered: {DocumentMasked} - {Specialty}", doctor.MaskDocument(), doctor.Specialty);
         }
 
         public void UpdateDoctor(Doctor doctor)
         {
             var existing = _repo.GetById(doctor.Id);
-            if (existing == null) throw new InvalidOperationException("Médico no encontrado.");
+            if (existing == null) throw new InvalidOperationException("Doctor not found.");
 
             var byDoc = _repo.GetByDocument(doctor.Document);
-            if (byDoc != null && byDoc.Id != doctor.Id) throw new InvalidOperationException("Otro médico usa ese documento.");
+            if (byDoc != null && byDoc.Id != doctor.Id) throw new InvalidOperationException("Another doctor uses that document.");
 
             // Check name+specialty uniqueness
             var clash = _repo.GetAll().Any(d => d.Id != doctor.Id &&
                                                 d.Name.ToLower() == doctor.Name.ToLower() &&
                                                 d.Specialty.ToLower() == doctor.Specialty.ToLower());
-            if (clash) throw new InvalidOperationException("Ya existe otro médico con el mismo nombre y especialidad.");
+            if (clash) throw new InvalidOperationException("Another doctor with the same name and specialty already exists.");
 
             _repo.Update(doctor);
         }

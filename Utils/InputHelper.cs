@@ -5,7 +5,7 @@ namespace Gestion_Hospital.Utils
 {
     public static class InputHelper
     {
-        // Pide un string con prompt; si allowEmpty=false, repite hasta que no esté vacío
+    // Requests a string with prompt; if allowEmpty=false, repeats until it is not empty
         public static string PromptString(string prompt, bool allowEmpty = false)
         {
             while (true)
@@ -21,7 +21,7 @@ namespace Gestion_Hospital.Utils
             }
         }
 
-        // Pide y valida nombre con reintentos
+    // Requests and validates name with retries
         public static string PromptName(string prompt)
         {
             while (true)
@@ -36,7 +36,7 @@ namespace Gestion_Hospital.Utils
             }
         }
 
-        // Pide y valida documento con reintentos
+    // Requests and validates document with retries
         public static string PromptDocument(string prompt)
         {
             while (true)
@@ -51,7 +51,7 @@ namespace Gestion_Hospital.Utils
             }
         }
 
-        // Pide y valida edad con reintentos
+    // Requests and validates age with retries
         public static int PromptAge(string prompt)
         {
             while (true)
@@ -66,7 +66,7 @@ namespace Gestion_Hospital.Utils
             }
         }
 
-        // Pide y valida email con reintentos
+    // Requests and validates email with retries
         public static string PromptEmail(string prompt)
         {
             while (true)
@@ -84,8 +84,8 @@ namespace Gestion_Hospital.Utils
             }
         }
 
-        // Pide y valida teléfono con reintentos; en caso de truncado avisa y acepta si el resultado es válido
-        // Devuelve una tupla (telefonoNormalizado, truncado)
+    // Requests and validates phone number with retries; if truncated, notifies and accepts if the result is valid
+    // Returns a tuple (normalizedPhone, truncated)
         public static (string phone, bool truncated) PromptPhone(string prompt)
         {
             while (true)

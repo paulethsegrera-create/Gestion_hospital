@@ -5,27 +5,27 @@ using Gestion_Hospital.Utils;
 
 namespace Gestion_Hospital.Controllers
 {
-    // Controlador encargado de manejar todas las operaciones relacionadas con los pacientes
+    // Controller responsible for handling all operations related to patients
     public class PatientController
     {
-        // Servicio de negocio que gestiona la lógica de los pacientes
+    // Business service that manages patient logic
         private readonly PatientService _service;
 
-        // Constructor que inyecta el servicio de pacientes
+    // Constructor that injects the patient service
         public PatientController(PatientService service)
         {
             _service = service;
         }
 
-        // ======================================
-        // MÉTODO: Registrar un nuevo paciente
-        // ======================================
+    // ======================================
+    // METHOD: Register a new patient
+    // ======================================
         public void Create()
         {
             Console.WriteLine("=== Registrar Paciente ===");
             try
             {
-                // Solicita los datos del paciente utilizando el helper de entrada con validaciones integradas
+                // Requests patient data using the input helper with integrated validations
                 var name = InputHelper.PromptName("Nombre: ");
                 var doc = InputHelper.PromptDocument("Documento: ");
                 var age = InputHelper.PromptAge("Edad: ");
@@ -33,7 +33,7 @@ namespace Gestion_Hospital.Controllers
                 var emailNormalized = InputHelper.PromptEmail("Correo: ");
 
                 // -------------------------
-                // Validaciones estrictas
+                // Strict validations
                 // -------------------------
                 if (!Validator.IsValidName(name))
                 {
@@ -61,11 +61,11 @@ namespace Gestion_Hospital.Controllers
                     return;
                 }
 
-                // Mensaje de advertencia si el número de teléfono fue truncado automáticamente
+                // Warning message if the phone number was automatically truncated
                 if (truncatedPhone)
                     Console.WriteLine("⚠️ El teléfono ingresado era más largo de 10 dígitos y fue truncado a los 10 dígitos finales.");
 
-                // Crea el objeto paciente con los datos validados
+                // Creates the patient object with validated data
                 var patient = new Patient
                 {
                     Name = name.Trim(),
@@ -75,47 +75,47 @@ namespace Gestion_Hospital.Controllers
                     Email = emailNormalized
                 };
 
-                // Llama al servicio para registrar el nuevo paciente
+                // Calls the service to register the new patient
                 _service.RegisterPatient(patient);
                 Console.WriteLine("✅ Paciente registrado correctamente.");
             }
             catch (Exception ex)
             {
-                // Manejo de errores genérico
+                // Generic error handling
                 Console.WriteLine($"❌ Error: {ex.Message}");
             }
         }
 
-        // ======================================
-        // MÉTODO: Editar datos de un paciente
-        // ======================================
+    // ======================================
+    // METHOD: Edit patient data
+    // ======================================
         public void Edit()
         {
             Console.WriteLine("=== Editar Paciente ===");
             try
             {
-                // Solicita el documento del paciente a editar
+                // Requests the document of the patient to edit
                 var doc = InputHelper.PromptString("Documento del paciente a editar: ", false).Trim();
                 var existing = _service.GetByDocument(doc);
 
-                // Si no se encuentra el paciente, se interrumpe la edición
+                // If the patient is not found, editing is interrupted
                 if (existing == null) { Console.WriteLine("Paciente no encontrado."); return; }
 
-                // Muestra los valores actuales y permite ingresar nuevos valores opcionales
+                // Shows current values and allows entering new optional values
                 Console.Write($"Nombre ({existing.Name}): "); var name = InputHelper.PromptString("", true);
                 Console.Write($"Edad ({existing.Age}): "); var ageStr = InputHelper.PromptString("", true);
                 Console.Write($"Teléfono ({existing.PhoneNumber}): "); var phoneInput = InputHelper.PromptString("", true);
                 Console.Write($"Correo ({existing.Email}): "); var emailInput = InputHelper.PromptString("", true);
 
-                // Si el usuario ingresó un nuevo nombre, se valida y reemplaza
+                // If the user entered a new name, it is validated and replaced
                 if (!string.IsNullOrWhiteSpace(name))
                 {
-                    // Usa el método PromptName para asegurar reintentos hasta un nombre válido
+                    // Uses the PromptName method to ensure retries until a valid name is entered
                     var validName = InputHelper.PromptName("Nombre: ");
                     existing.Name = validName;
                 }
 
-                // Si se ingresó una nueva edad, se convierte y valida
+                // If a new age is entered, it is converted and validated
                 if (!string.IsNullOrWhiteSpace(ageStr) && int.TryParse(ageStr, out int newAge))
                 {
                     if (!Validator.IsValidAge(newAge))
@@ -126,66 +126,66 @@ namespace Gestion_Hospital.Controllers
                     existing.Age = newAge;
                 }
 
-                // Si se ingresó un nuevo teléfono, se valida y normaliza
+                // If a new phone is entered, it is validated and normalized
                 if (!string.IsNullOrWhiteSpace(phoneInput))
                 {
-                    // PromptPhone fuerza reintentos hasta que el teléfono sea válido
+                    // PromptPhone forces retries until the phone is valid
                     var (normalized, _) = InputHelper.PromptPhone("Teléfono: ");
                     existing.PhoneNumber = normalized;
                 }
 
-                // Si se ingresó un nuevo correo, se valida también mediante InputHelper
+                // If a new email is entered, it is also validated using InputHelper
                 if (!string.IsNullOrWhiteSpace(emailInput))
                 {
                     var normalized = InputHelper.PromptEmail("Correo: ");
                     existing.Email = normalized;
                 }
 
-                // Guarda los cambios en el servicio
+                // Saves the changes in the service
                 _service.UpdatePatient(existing);
                 Console.WriteLine("✅ Paciente actualizado.");
             }
             catch (Exception ex)
             {
-                // Captura cualquier error en el proceso
+                // Captures any error in the process
                 Console.WriteLine($"❌ Error: {ex.Message}");
             }
         }
 
-        // ======================================
-        // MÉTODO: Listar todos los pacientes
-        // ======================================
+    // ======================================
+    // METHOD: List all patients
+    // ======================================
         public void List()
         {
             Console.WriteLine("=== Lista de Pacientes ===");
 
-            // Recorre todos los pacientes y muestra su información de forma enmascarada
+            // Iterates all patients and displays their information in masked form
             foreach (var p in _service.GetAll())
             {
-                // Mostrar datos sensibles enmascarados
+                // Display masked sensitive data
                 Console.WriteLine($"Id:{p.Id} | {p.Name} | Doc:{p.MaskDocument()} | Edad:{p.Age} | Tel:{p.MaskPhone()} | Email:{p.Email}");
             }
         }
 
-        // ======================================
-        // MÉTODO: Eliminar paciente por documento
-        // ======================================
+    // ======================================
+    // METHOD: Delete patient by document
+    // ======================================
         public void Delete()
         {
             Console.WriteLine("=== Eliminar Paciente ===");
 
-            // Solicita el documento del paciente a eliminar
+            // Requests the document of the patient to delete
             var doc = InputHelper.PromptDocument("Documento del paciente a eliminar: ");
             var existing = _service.GetByDocument(doc);
 
-            // Verifica si el paciente existe antes de eliminar
+            // Checks if the patient exists before deleting
             if (existing == null)
             {
                 Console.WriteLine("Paciente no encontrado.");
                 return;
             }
 
-            // Elimina el paciente a través del servicio usando su ID
+            // Deletes the patient through the service using their ID
             _service.DeletePatient(existing.Id);
             Console.WriteLine($"Paciente eliminado: {existing.Name} ({existing.MaskDocument()})");
         }

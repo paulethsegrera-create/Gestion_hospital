@@ -1,12 +1,12 @@
-namespace Gestion_Hospital.Interfaces // Define el namespace para organizar las interfaces del hospital
+namespace Gestion_Hospital.Interfaces // Defines the namespace to organize hospital interfaces
 {
     /// <summary>
-    /// Contrato simple para marcar entidades registrables/persistibles en el sistema.
-    /// Las implementaciones deben exponer una propiedad <see cref="Id"/>.
+    /// Simple contract to mark entities as registrable/persistable in the system.
+    /// Implementations must expose a <see cref="Id"/> property.
     /// </summary>
     public interface IRegistrable
     {
-        /// <summary>Identificador único de la entidad.</summary>
+    /// <summary>Unique identifier of the entity.</summary>
         int Id { get; set; }
     }
 }

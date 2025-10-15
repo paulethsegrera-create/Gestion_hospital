@@ -3,16 +3,22 @@ using Gestion_Hospital.Models; // Importa el espacio de nombres donde se encuent
 
 namespace Gestion_Hospital.Interfaces // Define el namespace para organizar las interfaces del hospital
 {
-    // Define una interfaz para el servicio de envío de correos electrónicos
+    /// <summary>
+    /// Interface for the email sending service.
+    /// </summary>
     public interface IEmailService
     {
-        // Método para enviar un correo electrónico
-        // Recibe destinatario, asunto y cuerpo del mensaje
-        // Devuelve un objeto EmailHistory que representa el registro del correo enviado
+        /// <summary>
+        /// Sends an email.
+        /// Receives recipient, subject, and message body.
+        /// Returns an EmailHistory object representing the sent email record.
+        /// </summary>
         EmailHistory SendEmail(string to, string subject, string body);
 
-        // Método para obtener el historial de correos enviados
-        // Devuelve una lista de objetos EmailHistory
+        /// <summary>
+        /// Gets the history of sent emails.
+        /// Returns a list of EmailHistory objects.
+        /// </summary>
         List<EmailHistory> GetHistory();
     }
 }

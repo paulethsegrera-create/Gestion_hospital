@@ -6,21 +6,21 @@ using Gestion_Hospital.Models;
 namespace Gestion_Hospital.Repositories
 {
     /// <summary>
-    /// Repositorio en memoria para <see cref="Patient"/>. Implementa operaciones básicas CRUD.
+    /// In-memory repository for <see cref="Patient"/>. Implements basic CRUD operations.
     /// </summary>
     public class PatientRepository : IPatientRepository
     {
         private readonly List<Patient> _patients = new();
         private int _nextId = 1;
 
-        /// <summary>Agrega un nuevo paciente (se asigna Id automáticamente).</summary>
+    /// <summary>Adds a new patient (Id is assigned automatically).</summary>
         public void Add(Patient patient)
         {
             patient.Id = _nextId++;
             _patients.Add(patient);
         }
 
-        /// <summary>Actualiza los datos del paciente existente.</summary>
+    /// <summary>Updates the existing patient's data.</summary>
         public void Update(Patient patient)
         {
             var existing = GetById(patient.Id);
@@ -32,20 +32,20 @@ namespace Gestion_Hospital.Repositories
             existing.Age = patient.Age;
         }
 
-        /// <summary>Elimina un paciente por Id.</summary>
+    /// <summary>Deletes a patient by Id.</summary>
         public void Delete(int id)
         {
             var existing = GetById(id);
             if (existing != null) _patients.Remove(existing);
         }
 
-        /// <summary>Obtiene un paciente por Id.</summary>
+    /// <summary>Gets a patient by Id.</summary>
         public Patient? GetById(int id) => _patients.FirstOrDefault(p => p.Id == id);
 
-        /// <summary>Busca un paciente por documento.</summary>
+    /// <summary>Finds a patient by document.</summary>
         public Patient? GetByDocument(string document) => _patients.FirstOrDefault(p => p.Document == document);
 
-        /// <summary>Devuelve todos los pacientes.</summary>
+    /// <summary>Returns all patients.</summary>
         public List<Patient> GetAll() => _patients.ToList();
     }
 }

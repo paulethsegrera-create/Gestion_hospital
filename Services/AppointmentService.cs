@@ -25,24 +25,24 @@ namespace Gestion_Hospital.Services
 
             public void DeleteAppointment(int appointmentId)
             {
-                var a = _repo.GetById(appointmentId) ?? throw new InvalidOperationException("Cita no encontrada.");
+                var a = _repo.GetById(appointmentId) ?? throw new InvalidOperationException("Appointment not found.");
                 _repo.Delete(appointmentId);
-                _logger?.LogInformation("Cita eliminada: {AppointmentId}", appointmentId);
+                _logger?.LogInformation("Appointment deleted: {AppointmentId}", appointmentId);
             }
 
-        // duration en minutos (por ejemplo 30)
+        // duration in minutes (e.g. 30)
         public Appointment Schedule(int patientId, int doctorId, DateTime start, int durationMinutes = 30)
         {
-            var patient = _patientRepo.GetById(patientId) ?? throw new InvalidOperationException("Paciente no existe.");
-            var doctor = _doctorRepo.GetById(doctorId) ?? throw new InvalidOperationException("Médico no existe.");
+            var patient = _patientRepo.GetById(patientId) ?? throw new InvalidOperationException("Patient does not exist.");
+            var doctor = _doctorRepo.GetById(doctorId) ?? throw new InvalidOperationException("Doctor does not exist.");
 
-            if (start < DateTime.Now) throw new InvalidOperationException("No se puede agendar en el pasado.");
+            if (start < DateTime.Now) throw new InvalidOperationException("Cannot schedule in the past.");
 
             var end = start.AddMinutes(durationMinutes);
 
-            // Conflictos
-            if (_repo.ExistsConflictForDoctor(doctorId, start, end)) throw new InvalidOperationException("El médico tiene otra cita en ese horario.");
-            if (_repo.ExistsConflictForPatient(patientId, start, end)) throw new InvalidOperationException("El paciente tiene otra cita en ese horario.");
+            // Conflicts
+            if (_repo.ExistsConflictForDoctor(doctorId, start, end)) throw new InvalidOperationException("The doctor has another appointment at that time.");
+            if (_repo.ExistsConflictForPatient(patientId, start, end)) throw new InvalidOperationException("The patient has another appointment at that time.");
 
             var appointment = new Appointment
             {
@@ -56,34 +56,34 @@ namespace Gestion_Hospital.Services
             };
 
             _repo.Add(appointment);
-            _logger?.LogInformation("Cita agendada: {AppointmentId} paciente:{PatientId} medico:{DoctorId} inicio:{Start}", appointment.Id, patientId, doctorId, start);
+            _logger?.LogInformation("Appointment scheduled: {AppointmentId} patient:{PatientId} doctor:{DoctorId} start:{Start}", appointment.Id, patientId, doctorId, start);
 
-            // Envío de correo simulado y registro en historial
-            string subject = $"Confirmación de cita con Dr. {doctor.Name}";
-            string body = $"Paciente: {patient.Name}\nFecha: {start}\nDoctor: {doctor.Name} ({doctor.Specialty})";
+            // Simulated email sending and history logging
+            string subject = $"Appointment confirmation with Dr. {doctor.Name}";
+            string body = $"Patient: {patient.Name}\nDate: {start}\nDoctor: {doctor.Name} ({doctor.Specialty})";
             var emailHistory = _emailService.SendEmail(patient.Email, subject, body);
-            // opcional: guardar info del envío en Notes
-            appointment.Notes = $"Email status: {(emailHistory.Sent ? "Enviado" : "No enviado")}";
+            // Optionally: save sending info in Notes
+            appointment.Notes = $"Email status: {(emailHistory.Sent ? "Sent" : "Not sent")}";
             _repo.Update(appointment);
-            _logger?.LogInformation("Email enviado: {Sent} para cita {AppointmentId}", emailHistory.Sent, appointment.Id);
+            _logger?.LogInformation("Email sent: {Sent} for appointment {AppointmentId}", emailHistory.Sent, appointment.Id);
 
             return appointment;
         }
 
         public void Cancel(int appointmentId)
         {
-            var a = _repo.GetById(appointmentId) ?? throw new InvalidOperationException("Cita no encontrada.");
+            var a = _repo.GetById(appointmentId) ?? throw new InvalidOperationException("Appointment not found.");
             a.Status = AppointmentStatus.Cancelled;
             _repo.Update(a);
-            _logger?.LogInformation("Cita cancelada: {AppointmentId}", appointmentId);
+            _logger?.LogInformation("Appointment cancelled: {AppointmentId}", appointmentId);
         }
 
         public void MarkAttended(int appointmentId)
         {
-            var a = _repo.GetById(appointmentId) ?? throw new InvalidOperationException("Cita no encontrada.");
+            var a = _repo.GetById(appointmentId) ?? throw new InvalidOperationException("Appointment not found.");
             a.Status = AppointmentStatus.Attended;
             _repo.Update(a);
-            _logger?.LogInformation("Cita marcada como atendida: {AppointmentId}", appointmentId);
+            _logger?.LogInformation("Appointment marked as attended: {AppointmentId}", appointmentId);
         }
 
         public List<Appointment> GetByPatient(int patientId) => _repo.GetByPatient(patientId);
